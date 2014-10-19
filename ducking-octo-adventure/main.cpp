@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <iostream>
 
+#include "game_state.h"
+
+#include "test_state.h"
+
 #ifdef _DEBUG
 void errorCallback(int error, const char* errorDescription)
 {
@@ -25,6 +29,16 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #ifdef _DEBUG
 	glfwSetErrorCallback(errorCallback);
 #endif
+
+	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	mainState.createWindow(mode->width, mode->height, "ducking-octo-adventure", true);
+	mainState.setState(new test_state());
+
+	while (!glfwWindowShouldClose(mainState.window))
+	{
+		mainState.Update();
+		mainState.Render();
+	}
 
 	glfwTerminate();
 	return 0;
