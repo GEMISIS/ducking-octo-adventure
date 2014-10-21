@@ -1,6 +1,11 @@
 #pragma once
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
+#include "stb_image.h"
+
+#include "shader_program.h"
 
 class tiny_state
 {
@@ -26,7 +31,7 @@ public:
 	}
 };
 
-static void keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mods);
+static void __stateUseKeyCallback(GLFWwindow* window, int key, int scanCode, int action, int mods);
 
 class game_state
 {
@@ -36,6 +41,13 @@ public:
 	}
 	game_state(game_state const&);
 	void operator=(game_state const&);
+	~game_state()
+	{
+		if (this->tinyState != nullptr)
+		{
+			this->tinyState->Destroy();
+		}
+	}
 
 	bool createWindow(int width, int height, const char* title, bool fullScreen)
 	{
@@ -73,7 +85,7 @@ public:
 
 		if (this->tinyState != nullptr)
 		{
-			glfwSetKeyCallback(this->window, keyCallback);
+			glfwSetKeyCallback(this->window, __stateUseKeyCallback);
 			status = this->tinyState->Initialize();
 		}
 		return status;
@@ -81,11 +93,13 @@ public:
 
 	int Update()
 	{
+		glfwPollEvents();
 		return this->tinyState->Update(this->window);
 	}
 
 	int Render()
 	{
+		glfwSwapBuffers(this->window);
 		return this->tinyState->Render(this->window);
 	}
 
@@ -96,7 +110,7 @@ private:
 
 static game_state mainState;
 
-static void keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
+static void __stateUseKeyCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 {
 	mainState.tinyKeyCallback(window, key, scanCode, action, mods);
 }

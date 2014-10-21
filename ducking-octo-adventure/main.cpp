@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include <iostream>
@@ -28,12 +29,18 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 #ifdef _DEBUG
 	glfwSetErrorCallback(errorCallback);
-#endif
-
+	mainState.createWindow(640, 480, "ducking-octo-adventure", false);
+#else
 	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 	mainState.createWindow(mode->width, mode->height, "ducking-octo-adventure", true);
-	mainState.setState(new test_state());
+#endif
 
+	if (glewInit() != GLEW_OK)
+	{
+		exit(0);
+	}
+
+	mainState.setState(new test_state());
 	while (!glfwWindowShouldClose(mainState.window))
 	{
 		mainState.Update();

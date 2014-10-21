@@ -4,9 +4,13 @@
 
 class test_state : public tiny_state
 {
+private:
+	shader_program shader;
+public:
 	int Initialize()
 	{
-		return 1;
+		shader = shader_program("test.vert", "test.frag");
+		return shader.Use();
 	}
 	void keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 	{
@@ -39,8 +43,6 @@ class test_state : public tiny_state
 		glColor3f(0.f, 0.f, 1.f);
 		glVertex3f(0.f, 0.6f, 0.f);
 		glEnd();
-		glfwSwapBuffers(window);
-		glfwPollEvents();
 		return 1;
 	}
 	int Destroy()
