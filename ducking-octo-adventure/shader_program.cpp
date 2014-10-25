@@ -117,3 +117,8 @@ int shader_program::Use()
 	}
 	return 0;
 }
+
+void shader_program::SetUniform(const char* uniformName, glm::mat4 mat)
+{
+	glUniformMatrix4fv(glGetUniformLocation(this->programID, uniformName), 1, GL_FALSE, &mat[0][0]);
+}

@@ -22,6 +22,9 @@
     <Filter Include="Source Files\resources">
       <UniqueIdentifier>{3d4f4f2b-059a-483e-9e7e-0f391240d618}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\objects">
+      <UniqueIdentifier>{fca69963-2859-4228-9048-9499eccd6e88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -43,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>Header Files\resources</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files\objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

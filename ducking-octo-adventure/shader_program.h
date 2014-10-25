@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <string>
+#include <glm.hpp>
 
 class shader_program
 {
@@ -11,6 +12,7 @@ public:
 	~shader_program();
 
 	int Use();
+	void SetUniform(const char* uniformName, glm::mat4 mat);
 private:
 	GLint vertexCompileStatus, fragmentCompileStatus, linkStatus;
 	std::string vertexCompileLog, fragmentCompileLog, linkLog;

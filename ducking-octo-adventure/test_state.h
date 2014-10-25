@@ -1,15 +1,22 @@
 #pragma once
 
 #include "game_state.h"
+#include "camera.h"
 
 class test_state : public tiny_state
 {
 private:
 	shader_program shader;
+	camera cam;
 public:
+	test_state()
+	{
+	}
 	int Initialize()
 	{
 		shader = shader_program("test.vert", "test.frag");
+		cam = camera(45.0f, 640.0f / 480.0f);
+		cam.Translate(0, 0, -2.0f);
 		return shader.Use();
 	}
 	void keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
@@ -19,10 +26,46 @@ public:
 	}
 	int Update(GLFWwindow* window)
 	{
+		if (glfwGetKey(window, GLFW_KEY_LEFT) & GLFW_PRESS)
+		{
+			cam.Rotate(-0.01f, 0, 1, 0);
+		}
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) & GLFW_PRESS)
+		{
+			cam.Rotate(0.01f, 0, 1, 0);
+		}
+		if (glfwGetKey(window, GLFW_KEY_UP) & GLFW_PRESS)
+		{
+			cam.Rotate(-0.01f, 1, 0, 0);
+		}
+		if (glfwGetKey(window, GLFW_KEY_DOWN) & GLFW_PRESS)
+		{
+			cam.Rotate(0.01f, 1, 0, 0);
+		}
+		if (glfwGetKey(window, GLFW_KEY_W) & GLFW_PRESS)
+		{
+			cam.StepForward(0.001f);
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) & GLFW_PRESS)
+		{
+			cam.StepForward(-0.001f);
+		}
+		if (glfwGetKey(window, GLFW_KEY_A) & GLFW_PRESS)
+		{
+			cam.Strife(-0.001f);
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) & GLFW_PRESS)
+		{
+			cam.Strife(0.001f);
+		}
 		return 1;
 	}
 	int Render(GLFWwindow* window)
 	{
+		this->shader.Use();
+		this->shader.SetUniform("perspectiveMatrix", this->cam.GetPerspectiveMatrix());
+		this->shader.SetUniform("viewMatrix", this->cam.GetViewMatrix());
+
 		float ratio;
 		int width, height;
 		glfwGetFramebufferSize(window, &width, &height);
