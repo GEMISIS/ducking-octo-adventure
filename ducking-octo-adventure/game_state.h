@@ -7,6 +7,8 @@
 
 #include "shader_program.h"
 
+float deltaTime = 0;
+
 class tiny_state
 {
 public:
@@ -47,6 +49,7 @@ public:
 		{
 			this->tinyState->Destroy();
 		}
+		glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
 
 	bool createWindow(int width, int height, const char* title, bool fullScreen)
@@ -60,6 +63,7 @@ public:
 		{
 			glfwMakeContextCurrent(this->window);
 		}
+		glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 		return this->window != NULL;
 	}
 
@@ -93,6 +97,8 @@ public:
 
 	int Update()
 	{
+		deltaTime = float(currentTime - lastTime);
+		this->currentTime = glfwGetTime();
 		glfwPollEvents();
 		return this->tinyState->Update(this->window);
 	}
@@ -106,6 +112,7 @@ public:
 	GLFWwindow* window;
 private:
 	tiny_state* tinyState;
+	double currentTime, lastTime;
 };
 
 static game_state mainState;

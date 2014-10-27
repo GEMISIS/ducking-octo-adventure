@@ -8,6 +8,9 @@ class test_state : public tiny_state
 private:
 	shader_program shader;
 	camera cam;
+
+	int windowX, windowY, windowWidth, windowHeight;
+	double mouseX, mouseY;
 public:
 	test_state()
 	{
@@ -28,12 +31,23 @@ public:
 	{
 		if (glfwGetKey(window, GLFW_KEY_LEFT) & GLFW_PRESS)
 		{
-			cam.Rotate(-0.01f, 0, 1, 0);
+			cam.Rotate(0, -0.01f, 0);
 		}
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) & GLFW_PRESS)
 		{
-			cam.Rotate(0.01f, 0, 1, 0);
+			cam.Rotate(0, 0.01f, 0);
 		}
+
+		glfwGetCursorPos(window, &this->mouseX, &this->mouseY);
+
+		glfwGetWindowPos(window, &this->windowX, &this->windowY);
+		glfwGetWindowSize(window, &this->windowWidth, &this->windowHeight);
+
+		glfwSetCursorPos(window, this->windowX + (this->windowWidth / 2), this->windowY + (this->windowHeight / 2));
+
+		cam.Rotate(0, -(float(this->windowX + (this->windowWidth / 2)) - this->mouseX), 0);
+		cam.Rotate((float(this->windowY + (this->windowHeight / 2)) - this->mouseY), 0, 0);
+		/*
 		if (glfwGetKey(window, GLFW_KEY_UP) & GLFW_PRESS)
 		{
 			cam.Rotate(-0.01f, 1, 0, 0);
@@ -42,6 +56,7 @@ public:
 		{
 			cam.Rotate(0.01f, 1, 0, 0);
 		}
+		*/
 		if (glfwGetKey(window, GLFW_KEY_W) & GLFW_PRESS)
 		{
 			cam.StepForward(0.001f);
