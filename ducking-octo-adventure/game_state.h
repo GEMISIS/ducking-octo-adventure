@@ -9,27 +9,34 @@
 
 float deltaTime = 0;
 
+typedef enum STATE_ERRORS
+{
+	NONE = 0,
+	NOT_OVERWRITTEN = -1,
+	INIT_ERROR = -2
+};
+
 class tiny_state
 {
 public:
-	virtual int Initialize()
+	virtual STATE_ERRORS Initialize(GLFWwindow* window)
 	{
-		return 0;
+		return NOT_OVERWRITTEN;
 	}
 	virtual void keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 	{
 	}
-	virtual int Update(GLFWwindow* window)
+	virtual STATE_ERRORS Update(GLFWwindow* window)
 	{
-		return 0;
+		return NOT_OVERWRITTEN;
 	}
-	virtual int Render(GLFWwindow* window)
+	virtual STATE_ERRORS Render(GLFWwindow* window)
 	{
-		return 0;
+		return NOT_OVERWRITTEN;
 	}
-	virtual int Destroy()
+	virtual STATE_ERRORS Destroy()
 	{
-		return 0;
+		return NOT_OVERWRITTEN;
 	}
 };
 
@@ -90,7 +97,7 @@ public:
 		if (this->tinyState != nullptr)
 		{
 			glfwSetKeyCallback(this->window, __stateUseKeyCallback);
-			status = this->tinyState->Initialize();
+			status = this->tinyState->Initialize(this->window);
 		}
 		return status;
 	}

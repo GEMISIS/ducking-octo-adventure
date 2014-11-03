@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="Drawable.h" />
     <ClInclude Include="game_state.h" />
     <ClInclude Include="shader_program.h" />
     <ClInclude Include="stb_image.h" />

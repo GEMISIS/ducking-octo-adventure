@@ -50,6 +50,9 @@
     <ClInclude Include="camera.h">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
+    <ClInclude Include="Drawable.h">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.vert">

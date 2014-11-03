@@ -17,6 +17,27 @@ shader_program::shader_program()
 
 shader_program::shader_program(const char* vertex_shader, const char* fragment_shader)
 {
+	this->Load(vertex_shader, fragment_shader);
+}
+
+shader_program::~shader_program()
+{
+	if (this->programID > -1)
+	{
+		glDeleteProgram(this->programID);
+	}
+	if (this->vertexShaderID > -1)
+	{
+		glDeleteShader(this->vertexShaderID);
+	}
+	if (this->fragmentShaderID > -1)
+	{
+		glDeleteShader(this->fragmentShaderID);
+	}
+}
+
+SHADER_ERRORS shader_program::Load(const char* vertex_shader, const char* fragment_shader)
+{
 	this->linkStatus = 0;
 	this->vertexCompileStatus = 0;
 	this->fragmentCompileStatus = 0;
@@ -90,32 +111,45 @@ shader_program::shader_program(const char* vertex_shader, const char* fragment_s
 		this->vertexShaderID = -1;
 		this->fragmentShaderID = -1;
 	}
+	else if (!this->vertexCompileStatus && !this->fragmentCompileStatus)
+	{
+		return VERTEX_AND_FRAGMENT_COMPILE_FAILURE;
+	}
+	else if (!this->vertexCompileStatus)
+	{
+		return VERTEX_COMPILE_FAILURE;
+	}
+	else if (!this->fragmentCompileStatus)
+	{
+		return FRAGMENT_COMPILE_FAILURE;
+	}
+
+	if (!this->linkStatus)
+	{
+		return LINK_FAILURE;
+	}
 }
 
-shader_program::~shader_program()
-{
-	if (this->programID > -1)
-	{
-		glDeleteProgram(this->programID);
-	}
-	if (this->vertexShaderID > -1)
-	{
-		glDeleteShader(this->vertexShaderID);
-	}
-	if (this->fragmentShaderID > -1)
-	{
-		glDeleteShader(this->fragmentShaderID);
-	}
-}
-
-int shader_program::Use()
+SHADER_ERRORS shader_program::Use()
 {
 	if (this->linkStatus)
 	{
 		glUseProgram(this->programID);
-		return 1;
+		return NONE;
 	}
-	return 0;
+	if (!this->linkStatus)
+	{
+		return LINK_FAILURE;
+	}
+	else if (!this->fragmentCompileStatus)
+	{
+		return FRAGMENT_COMPILE_FAILURE;
+	}
+	else if (!this->vertexCompileStatus)
+	{
+		return VERTEX_COMPILE_FAILURE;
+	}
+	return UNKNOWN;
 }
 
 void shader_program::SetUniform(const char* uniformName, glm::mat4 mat)

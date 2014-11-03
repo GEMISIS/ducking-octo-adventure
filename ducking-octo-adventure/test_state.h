@@ -15,19 +15,29 @@ public:
 	test_state()
 	{
 	}
-	int Initialize()
+	STATE_ERRORS Initialize(GLFWwindow* window)
 	{
 		shader = shader_program("test.vert", "test.frag");
 		cam = camera(45.0f, 640.0f / 480.0f);
 		cam.Translate(0, 0, -2.0f);
-		return shader.Use();
+
+		glfwGetCursorPos(window, &this->mouseX, &this->mouseY);
+		glfwGetWindowPos(window, &this->windowX, &this->windowY);
+		glfwGetWindowSize(window, &this->windowWidth, &this->windowHeight);
+		glfwSetCursorPos(window, this->windowX + (this->windowWidth / 2), this->windowY + (this->windowHeight / 2));
+
+		if (shader.Use() != SHADER_ERRORS::NONE)
+		{
+			return INIT_ERROR;
+		}
+		return NONE;
 	}
 	void keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 	{
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-	int Update(GLFWwindow* window)
+	STATE_ERRORS Update(GLFWwindow* window)
 	{
 		if (glfwGetKey(window, GLFW_KEY_LEFT) & GLFW_PRESS)
 		{
@@ -45,8 +55,8 @@ public:
 
 		glfwSetCursorPos(window, this->windowX + (this->windowWidth / 2), this->windowY + (this->windowHeight / 2));
 
-		cam.Rotate(0, -(float(this->windowX + (this->windowWidth / 2)) - this->mouseX), 0);
-		cam.Rotate((float(this->windowY + (this->windowHeight / 2)) - this->mouseY), 0, 0);
+		cam.Rotate(0, -(float(this->windowX + (this->windowWidth / 2)) - (float)this->mouseX), 0);
+		cam.Rotate((float(this->windowY + (this->windowHeight / 2)) - (float)this->mouseY), 0, 0);
 		/*
 		if (glfwGetKey(window, GLFW_KEY_UP) & GLFW_PRESS)
 		{
@@ -73,24 +83,15 @@ public:
 		{
 			cam.Strife(0.001f);
 		}
-		return 1;
+		return NONE;
 	}
-	int Render(GLFWwindow* window)
+	STATE_ERRORS Render(GLFWwindow* window)
 	{
 		this->shader.Use();
 		this->shader.SetUniform("perspectiveMatrix", this->cam.GetPerspectiveMatrix());
 		this->shader.SetUniform("viewMatrix", this->cam.GetViewMatrix());
 
-		float ratio;
-		int width, height;
-		glfwGetFramebufferSize(window, &width, &height);
-		ratio = width / (float)height;
-		glViewport(0, 0, width, height);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		glMatrixMode(GL_MODELVIEW);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 		glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
 		glBegin(GL_TRIANGLES);
@@ -101,10 +102,10 @@ public:
 		glColor3f(0.f, 0.f, 1.f);
 		glVertex3f(0.f, 0.6f, 0.f);
 		glEnd();
-		return 1;
+		return NONE;
 	}
-	int Destroy()
+	STATE_ERRORS Destroy()
 	{
-		return 1;
+		return NONE;
 	}
 };
