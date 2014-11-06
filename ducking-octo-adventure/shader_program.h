@@ -23,6 +23,7 @@ public:
 
 	SHADER_ERRORS Load(const char* vertex_shader, const char* fragment_shader);
 	SHADER_ERRORS Use();
+
 	void SetUniform(const char* uniformName, glm::mat4 mat);
 private:
 	GLint vertexCompileStatus, fragmentCompileStatus, linkStatus;

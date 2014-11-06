@@ -10,9 +10,9 @@ shader_program::shader_program()
 	this->vertexCompileStatus = 0;
 	this->fragmentCompileStatus = 0;
 
-	this->programID = -1;
-	this->vertexShaderID = -1;
-	this->fragmentShaderID = -1;
+	this->programID = 0;
+	this->vertexShaderID = 0;
+	this->fragmentShaderID = 0;
 }
 
 shader_program::shader_program(const char* vertex_shader, const char* fragment_shader)
@@ -22,15 +22,15 @@ shader_program::shader_program(const char* vertex_shader, const char* fragment_s
 
 shader_program::~shader_program()
 {
-	if (this->programID > -1)
+	if (this->programID > 0)
 	{
 		glDeleteProgram(this->programID);
 	}
-	if (this->vertexShaderID > -1)
+	if (this->vertexShaderID > 0)
 	{
 		glDeleteShader(this->vertexShaderID);
 	}
-	if (this->fragmentShaderID > -1)
+	if (this->fragmentShaderID > 0)
 	{
 		glDeleteShader(this->fragmentShaderID);
 	}
@@ -42,9 +42,9 @@ SHADER_ERRORS shader_program::Load(const char* vertex_shader, const char* fragme
 	this->vertexCompileStatus = 0;
 	this->fragmentCompileStatus = 0;
 
-	this->programID = -1;
-	this->vertexShaderID = -1;
-	this->fragmentShaderID = -1;
+	this->programID = 0;
+	this->vertexShaderID = 0;
+	this->fragmentShaderID = 0;
 
 	int logLength = 0;
 	std::vector<char> log;
@@ -108,8 +108,8 @@ SHADER_ERRORS shader_program::Load(const char* vertex_shader, const char* fragme
 		glDeleteShader(this->vertexShaderID);
 		glDeleteShader(this->fragmentShaderID);
 
-		this->vertexShaderID = -1;
-		this->fragmentShaderID = -1;
+		this->vertexShaderID = 0;
+		this->fragmentShaderID = 0;
 	}
 	else if (!this->vertexCompileStatus && !this->fragmentCompileStatus)
 	{
