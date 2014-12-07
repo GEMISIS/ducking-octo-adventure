@@ -9,7 +9,7 @@
 
 float deltaTime = 0;
 
-typedef enum STATE_ERRORS
+enum class STATE_ERRORS
 {
 	NONE = 0,
 	NOT_OVERWRITTEN = -1,
@@ -21,22 +21,22 @@ class tiny_state
 public:
 	virtual STATE_ERRORS Initialize(GLFWwindow* window)
 	{
-		return NOT_OVERWRITTEN;
+		return STATE_ERRORS::NOT_OVERWRITTEN;
 	}
 	virtual void keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 	{
 	}
 	virtual STATE_ERRORS Update(GLFWwindow* window)
 	{
-		return NOT_OVERWRITTEN;
+		return STATE_ERRORS::NOT_OVERWRITTEN;
 	}
 	virtual STATE_ERRORS Render(GLFWwindow* window)
 	{
-		return NOT_OVERWRITTEN;
+		return STATE_ERRORS::NOT_OVERWRITTEN;
 	}
 	virtual STATE_ERRORS Destroy()
 	{
-		return NOT_OVERWRITTEN;
+		return STATE_ERRORS::NOT_OVERWRITTEN;
 	}
 };
 
@@ -79,15 +79,15 @@ public:
 		this->tinyState->keyCallback(window, key, scanCode, action, mods);
 	}
 
-	int setState(tiny_state* nextState)
+	STATE_ERRORS setState(tiny_state* nextState)
 	{
-		int status = 1;
+		STATE_ERRORS status = STATE_ERRORS::NONE;
 		if (this->tinyState != nullptr)
 		{
 			status = this->tinyState->Destroy();
 		}
 
-		if (status != 1)
+		if (status != STATE_ERRORS::NONE)
 		{
 			return status;
 		}
@@ -102,7 +102,7 @@ public:
 		return status;
 	}
 
-	int Update()
+	STATE_ERRORS Update()
 	{
 		deltaTime = float(currentTime - lastTime);
 		this->currentTime = glfwGetTime();
@@ -110,7 +110,7 @@ public:
 		return this->tinyState->Update(this->window);
 	}
 
-	int Render()
+	STATE_ERRORS Render()
 	{
 		glfwSwapBuffers(this->window);
 		return this->tinyState->Render(this->window);

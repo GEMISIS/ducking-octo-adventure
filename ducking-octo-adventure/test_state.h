@@ -28,9 +28,9 @@ public:
 
 		if (shader.Use() != SHADER_ERRORS::NONE)
 		{
-			return INIT_ERROR;
+			return STATE_ERRORS::INIT_ERROR;
 		}
-		return NONE;
+		return STATE_ERRORS::NONE;
 	}
 	void keyCallback(GLFWwindow* window, int key, int scanCode, int action, int mods)
 	{
@@ -83,7 +83,7 @@ public:
 		{
 			cam.Strife(0.001f);
 		}
-		return NONE;
+		return STATE_ERRORS::NONE;
 	}
 	STATE_ERRORS Render(GLFWwindow* window)
 	{
@@ -102,10 +102,10 @@ public:
 		glColor3f(0.f, 0.f, 1.f);
 		glVertex3f(0.f, 0.6f, 0.f);
 		glEnd();
-		return NONE;
+		return STATE_ERRORS::NONE;
 	}
 	STATE_ERRORS Destroy()
 	{
-		return NONE;
+		return STATE_ERRORS::NONE;
 	}
 };

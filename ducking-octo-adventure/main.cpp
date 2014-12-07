@@ -40,6 +40,11 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		exit(0);
 	}
 
+	int version[2];
+	glGetIntegerv(GL_MAJOR_VERSION, &version[0]);
+	glGetIntegerv(GL_MINOR_VERSION, &version[1]);
+	std::cout << "OpenGL Version: " << version[0] << "." << version[1];
+
 	mainState.setState(new test_state());
 	while (!glfwWindowShouldClose(mainState.window))
 	{

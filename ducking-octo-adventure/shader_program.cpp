@@ -113,20 +113,20 @@ SHADER_ERRORS shader_program::Load(const char* vertex_shader, const char* fragme
 	}
 	else if (!this->vertexCompileStatus && !this->fragmentCompileStatus)
 	{
-		return VERTEX_AND_FRAGMENT_COMPILE_FAILURE;
+		return SHADER_ERRORS::VERTEX_AND_FRAGMENT_COMPILE_FAILURE;
 	}
 	else if (!this->vertexCompileStatus)
 	{
-		return VERTEX_COMPILE_FAILURE;
+		return SHADER_ERRORS::VERTEX_COMPILE_FAILURE;
 	}
 	else if (!this->fragmentCompileStatus)
 	{
-		return FRAGMENT_COMPILE_FAILURE;
+		return SHADER_ERRORS::FRAGMENT_COMPILE_FAILURE;
 	}
 
 	if (!this->linkStatus)
 	{
-		return LINK_FAILURE;
+		return SHADER_ERRORS::LINK_FAILURE;
 	}
 }
 
@@ -135,21 +135,21 @@ SHADER_ERRORS shader_program::Use()
 	if (this->linkStatus)
 	{
 		glUseProgram(this->programID);
-		return NONE;
+		return SHADER_ERRORS::NONE;
 	}
 	if (!this->linkStatus)
 	{
-		return LINK_FAILURE;
+		return SHADER_ERRORS::LINK_FAILURE;
 	}
 	else if (!this->fragmentCompileStatus)
 	{
-		return FRAGMENT_COMPILE_FAILURE;
+		return SHADER_ERRORS::FRAGMENT_COMPILE_FAILURE;
 	}
 	else if (!this->vertexCompileStatus)
 	{
-		return VERTEX_COMPILE_FAILURE;
+		return SHADER_ERRORS::VERTEX_COMPILE_FAILURE;
 	}
-	return UNKNOWN;
+	return SHADER_ERRORS::UNKNOWN;
 }
 
 void shader_program::SetUniform(const char* uniformName, glm::mat4 mat)

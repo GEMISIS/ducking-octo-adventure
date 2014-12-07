@@ -4,7 +4,7 @@
 #include <string>
 #include <glm.hpp>
 
-typedef enum SHADER_ERRORS
+enum class SHADER_ERRORS
 {
 	NONE = 0,
 	UNKNOWN = -1,
