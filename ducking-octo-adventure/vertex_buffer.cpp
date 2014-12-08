@@ -1,10 +1,19 @@
 #include "vertex_buffer.h"
 
+#define VERTEX_BUFFER_SCALE 2
 #define VERTEX_HASH_SCALAR 1000
 #define STARTING_BUFFER_SIZE 1024
 
 unsigned long buffer_size = STARTING_BUFFER_SIZE;
-vertex_t** vertices = new vertex_t*[STARTING_BUFFER_SIZE];
+vertex_t** vertices = NULL;
+
+void zeroBuffer(unsigned long start, unsigned long end)
+{
+	for (unsigned long i = start; i < end && i < buffer_size; i += 1)
+	{
+		vertices[i] = NULL;
+	}
+}
 
 unsigned long hashVertex(vertex_t vertex)
 {
@@ -15,9 +24,21 @@ unsigned long hashVertex(vertex_t vertex)
 	return hash;
 }
 
+void setupVertexBuffer()
+{
+	setupVertexBuffer(STARTING_BUFFER_SIZE);
+}
+
+void setupVertexBuffer(unsigned long bufferSize)
+{
+	buffer_size = bufferSize;
+	vertices = new vertex_t*[buffer_size];
+	zeroBuffer(0, buffer_size);
+}
+
 void resizeBuffer(unsigned long size)
 {
-	vertex_t** temp = new vertex_t*[size + 1];
+	vertex_t** temp = new vertex_t*[size * VERTEX_BUFFER_SCALE];
 
 	for (unsigned long i = 0; i < buffer_size; i += 1)
 	{
@@ -28,7 +49,8 @@ void resizeBuffer(unsigned long size)
 	vertices = temp;
 	temp = NULL;
 
-	buffer_size = size + 1;
+	zeroBuffer(buffer_size, size * VERTEX_BUFFER_SCALE);
+	buffer_size = size * VERTEX_BUFFER_SCALE;
 }
 
 void setVertex(vertex_t* vertex)
