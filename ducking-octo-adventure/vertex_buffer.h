@@ -16,3 +16,4 @@ void setupVertexBuffer();
 void setupVertexBuffer(unsigned long bufferSize);
 void setVertex(vertex_t* vertex);
 vertex_t* getVertex(vertex_t* vertex);
+void destroyVertexBuffer();

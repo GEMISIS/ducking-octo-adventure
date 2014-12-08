@@ -128,6 +128,8 @@ SHADER_ERRORS shader_program::Load(const char* vertex_shader, const char* fragme
 	{
 		return SHADER_ERRORS::LINK_FAILURE;
 	}
+
+	return SHADER_ERRORS::NONE;
 }
 
 SHADER_ERRORS shader_program::Use()

@@ -45,7 +45,7 @@ void resizeBuffer(unsigned long size)
 		temp[i] = vertices[i];
 	}
 
-	free(vertices);
+	delete temp;
 	vertices = temp;
 	temp = NULL;
 
@@ -114,3 +114,7 @@ vertex_t* getVertex(vertex_t* vertex)
 	}
 }
 
+void destroyVertexBuffer()
+{
+	delete vertices;
+}
