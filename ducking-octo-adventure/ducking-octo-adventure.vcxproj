@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader_program.cpp" />
+    <ClCompile Include="vertex_buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="shader_program.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="test_state.h" />
+    <ClInclude Include="vertex_buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="test.frag" />

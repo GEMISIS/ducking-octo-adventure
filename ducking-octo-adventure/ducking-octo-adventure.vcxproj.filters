@@ -33,6 +33,9 @@
     <ClCompile Include="shader_program.cpp">
       <Filter>Source Files\resources</Filter>
     </ClCompile>
+    <ClCompile Include="vertex_buffer.cpp">
+      <Filter>Source Files\resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game_state.h">
@@ -52,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="Drawable.h">
       <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="vertex_buffer.h">
+      <Filter>Header Files\resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

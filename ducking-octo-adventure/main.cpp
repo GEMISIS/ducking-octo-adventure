@@ -7,6 +7,8 @@
 
 #include "test_state.h"
 
+#include "vertex_buffer.h"
+
 #ifdef _DEBUG
 void errorCallback(int error, const char* errorDescription)
 {
@@ -40,10 +42,12 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		exit(0);
 	}
 
+#ifdef _DEBUG
 	int version[2];
 	glGetIntegerv(GL_MAJOR_VERSION, &version[0]);
 	glGetIntegerv(GL_MINOR_VERSION, &version[1]);
 	std::cout << "OpenGL Version: " << version[0] << "." << version[1];
+#endif
 
 	mainState.setState(new test_state());
 	while (!glfwWindowShouldClose(mainState.window))
