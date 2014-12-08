@@ -51,14 +51,17 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	std::cout << "OpenGL Version: " << version[0] << "." << version[1];
 #endif
 
-	mainState.setState(new test_state());
+	if (mainState.setState(new test_state()) != STATE_ERRORS::NONE)
+	{
+		std::cout << "Error creating state!";
+		return 0;
+	}
 	while (!glfwWindowShouldClose(mainState.window))
 	{
 		mainState.Update();
 		mainState.Render();
 	}
 
-	glfwTerminate();
 	destroyVertexBuffer();
 	return 0;
 }

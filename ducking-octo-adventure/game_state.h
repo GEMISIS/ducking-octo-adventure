@@ -57,6 +57,11 @@ public:
 			this->tinyState->Destroy();
 		}
 		glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		if (this->window)
+		{
+			glfwDestroyWindow(this->window);
+		}
+		glfwTerminate();
 	}
 
 	bool createWindow(int width, int height, const char* title, bool fullScreen)
