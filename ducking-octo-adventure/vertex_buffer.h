@@ -8,7 +8,7 @@
 
 typedef struct
 {
-	unsigned int bufferID;
+	signed int index;
 	float x, y, z;
 }vertex_t;
 

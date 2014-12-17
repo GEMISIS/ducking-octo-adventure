@@ -7,6 +7,8 @@
 unsigned long buffer_size = STARTING_BUFFER_SIZE;
 vertex_t** vertices = NULL;
 
+signed int currentIndex = 0;
+
 void zeroBuffer(unsigned long start, unsigned long end)
 {
 	for (unsigned long i = start; i < end && i < buffer_size; i += 1)
@@ -53,7 +55,7 @@ void resizeBuffer(unsigned long size)
 	buffer_size = size * VERTEX_BUFFER_SCALE;
 }
 
-void setVertex(vertex_t* vertex)
+signed int addVertex(vertex_t* vertex)
 {
 	unsigned long hash = hashVertex(*vertex);
 
@@ -62,17 +64,22 @@ void setVertex(vertex_t* vertex)
 #ifdef _DEBUG
 		std::cout << "Error: Vertex is NULL!";
 #endif
-		return;
+		return -1;
 	}
 
 	if (hash < buffer_size)
 	{
 		if (vertices[hash] == NULL)
 		{
+			vertex->index = currentIndex;
 			vertices[hash] = vertex;
+			currentIndex += 1;
+			return currentIndex - 1;
 		}
 		else
 		{
+			//TODO: Handle Collisions
+			return -1;
 #ifdef _DEBUG
 			std::cout << "Error: Vertex hash has collision!";
 #endif
@@ -81,15 +88,19 @@ void setVertex(vertex_t* vertex)
 	else
 	{
 		resizeBuffer(hash);
+
+		vertex->index = currentIndex;
 		vertices[hash] = vertex;
+		currentIndex += 1;
+		return currentIndex - 1;
 	}
 }
 
-vertex_t* getVertex(vertex_t* vertex)
+signed int getVertexIndex(vertex_t* vertex)
 {
 	if (vertex == NULL)
 	{
-		return NULL;
+		return -1;
 	}
 
 	unsigned long hash = hashVertex(*vertex);
@@ -98,19 +109,16 @@ vertex_t* getVertex(vertex_t* vertex)
 	{
 		if (vertices[hash] != NULL)
 		{
-			return vertices[hash];
+			return vertices[hash]->index;
 		}
 		else
 		{
-			vertices[hash] = vertex;
-			return vertex;
+			return -1;
 		}
 	}
 	else
 	{
-		resizeBuffer(hash);
-		vertices[hash] = vertex;
-		return vertex;
+		return -1;
 	}
 }
 
